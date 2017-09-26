@@ -34,7 +34,7 @@ int main(){
                 mytime(&fim);
                 tempo += (fim-inicio);
             }
-            printf("size[%d], stride[%6.d]: %.15f.\n", size, stride, (tempo/nRun)/sizeof(uint32_t));
+            printf("size[%d], stride[%6.d]: %.15f.\n", size, stride, (tempo/nRun)/size);
         }
         free(a);
         free(b);
