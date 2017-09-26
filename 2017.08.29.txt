@@ -1,0 +1,105 @@
+Compilação e representação intermediária
+- flags
+    -march=native         | principais problemas de usar
+    -mtune=native         | estas flags é a compatibilidade
+                          | principal utilidade hardwares especificos
+
+aula de hoje Tiling - caso de estudo: hotspot(Rodinia)
+
+1. Olhem o código, compilem, executem
+
+single_iteration
+
+  | | | | |
+  | |X| | |
+  | | | | |
+  | | | | |
+
+  calcula da temperature relacionado as existentes em volta(sem as diagonais)
+  especie de "convolucão"
+    Padrão de computação Stencil, no caso de 2dimensões de até 5 células (2D5)
+
+código pronto para utilização do omp
+
+para utilizar tiling deve-se quebrar a matriz em blocos
+
+| | |     | | |
+| |X|     | | |
+
+
+| | |     | | |
+| | |     | | |
+
+cuidados nos blocos nos extremos (cuidar nos laçoes)
+
+cada um dos blocos chamar de int chunk
+saber quantos chunks. Como calcular? num_chunks
+  multiplicar rows x columns / (BLOCK_SIZE_columns x BLOCK_SIZE_Row)
+  chunks_in_row =  row / BLOCK_SIZE_Row
+  chunks_in_columns = columns / BLOCK_SIZE_C
+
+...
+
+dentro do 'pragma' ver variaveis
+private (chunk)
+firstprivate(num_chunk, chunks_in_row)
+
+
+lacos para os chunks...
+bloco de chunks
+ c.start x c.fim do BLOCK
+ r.start x r.fim do BLOCK
+
+r_start = BLOCK_SIZE_R *(chunks / chunks_in_col)
+
+  dado matriz 4x4
+    se o valor for entre 0 e 3 estará na primeira linha
+
+      |0|1|2|3|
+      |4|5| | |
+      | | | | |
+      | | | | |
+
+c_start = BLOCK_SIZE_C * (chunks % chunks_in_row)
+
+
+r_end = r_start + BLOCK_SIZE_R > row ? row : r_start + BLOCK_SIZE_R ;
+c_end = c_start + BLOCK_SIZE_C > col ? col : c_start + BLOCK_SIZE_C ;
+
+com isso sabe-se navegar dentro de um bloco
+
+(r = 0; r < row; ++r) -> (r = r_start; r < r_end; ++r)
+
+......
+ifs
+
+modificar para utilizar os limites do bloco
+r == 0 -> r_start == 0
+c == 0 -> c_start == 0
+
+.. e assim por diante
+
+if(r_start == 0)||(c_start == 0)
+||(r_end == row)||(c_end == col)
+{  for(r =r_start;r < r_end;++r)
+    for(c =c_start;c < c_end;++c)
+        if
+        else if
+}else
+  .... código do final [do ultimo else] replicado do último laço sem os ifThenElse
+...................................................
+artigo
+Compiler Optimization Space Exploration
+CGO'03
+
+- plataforma itanium intel
+  - VLIW | EPIC
+
+speed para benchmarch
+
+- cycle count
+- cache dados
+- cache inst.
+- branches..
+
+.......................................................

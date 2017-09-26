@@ -1,0 +1,5 @@
+#!/bin/bash
+
+make
+
+./seq_integral 10000

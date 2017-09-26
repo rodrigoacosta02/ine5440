@@ -1,0 +1,15 @@
+
+PERF
+    llc-loads
+        - misses
+      -sotres
+        -misses
+
+PAPI
+
+VTUNE (intel supported)
+
+
+
+-----------------------------------
+py -m cProfile -s cumtime SmithWaterman.py

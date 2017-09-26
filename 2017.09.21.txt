@@ -1,0 +1,9 @@
+memória e estruturas de dados
+estruturas de dados geometricas(espaciais)
+
+k-means
+algorithm classic Floyd
+complexity O(nk)
+
+bin
+kd-trees

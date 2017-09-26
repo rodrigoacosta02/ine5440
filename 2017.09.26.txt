@@ -1,0 +1,6 @@
+Memória e estrutura de dados
+lmbeanch
+
+benchmark de memoria
+  - latencia
+  - largura de banda

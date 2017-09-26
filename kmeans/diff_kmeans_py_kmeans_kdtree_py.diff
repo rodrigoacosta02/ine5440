@@ -1,0 +1,23 @@
+4a5
+> from scipy.spatial import KDTree
+20a22
+>         self.kd_mu = None
+60c62,63
+<  
+---
+>         # plt.show()
+> 
+65c68,69
+<             bestmukey = min([(i[0], np.linalg.norm(x-mu[i[0]])) for i in enumerate(mu)], key=lambda t:t[1])[0]
+---
+>             # bestmukey = min([(i[0], np.linalg.norm(x-mu[i[0]])) for i in enumerate(mu)], key=lambda t:t[1])[0]
+>             bestmukey = self.kd_mu.query([x], k=1)[1][0]
+78a83
+>         self.kd_mu = KDTree(np.array(self.mu))
+91a97,98
+>             # Initialize KDTree
+>             self.kd_mu = KDTree(np.array(self.mu))
+106c113
+< kmeans = KMeans(3, N=200)
+---
+> kmeans = KMeans(32, N=2048)
