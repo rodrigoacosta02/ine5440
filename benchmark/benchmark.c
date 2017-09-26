@@ -7,13 +7,13 @@
 int main(){
     double inicio, fim, tempo;
 
-    uint32_t sizes[] = {1024*32, 1024*64, 1024*128, 1024*256, 1024*512};
+    uint32_t sizes[] = {1024*32, 1024*64, 1024*128, 1024*256, 1024*512, 8*1024*1024};
     uint32_t nSizes = sizeof(sizes)/sizeof(uint32_t);
-    uint32_t strides[] = {1, 2, 4, 16, 1024, 2046, 64*1024, 128*1024};
+    uint32_t strides[] = {1, 4, 16, 1024, 2046, 64*1024, 128*1024};
     uint32_t nStrides = sizeof(strides)/sizeof(uint32_t);
     uint32_t nRun = 128;
 
-    uint32_t *a, *b, *c;
+    uint32_t *a, *b;
     uint32_t size, stride, aux;
 
     for(uint32_t s1 = 0; s1<nSizes; s1++){
@@ -34,7 +34,7 @@ int main(){
                 mytime(&fim);
                 tempo += (fim-inicio);
             }
-            printf("size[%d], stride[%6.d]: %.15f.\n", size, stride, (tempo/nRun)/size);
+            printf("size[%4.dKB], stride[%6.d]: %.15fs.\n", size/1024, stride, (tempo/nRun)/size);
         }
         free(a);
         free(b);
